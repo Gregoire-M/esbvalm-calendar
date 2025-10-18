@@ -24,7 +24,7 @@ jobs:
       - name: Run script and upload to GCP
         env:
           GCP_SERVICE_ACCOUNT_KEY: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
-          BUCKET_NAME: "nom-de-ton-bucket"
+          BUCKET_NAME: "symfonic.fr"
         run: |
           echo "$GCP_SERVICE_ACCOUNT_KEY" > key.json
           export GOOGLE_APPLICATION_CREDENTIALS="key.json"
