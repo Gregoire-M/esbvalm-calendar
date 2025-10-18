@@ -2,6 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 from ics import Calendar, Event
 from datetime import datetime, timedelta
+from google.cloud import storage
 import pytz
 
 url = "https://esbva-lm.com/equipe-pro/calendrier-resultat/"
@@ -35,3 +36,8 @@ for match in matches:
 
 with open("esbva_lm_calendrier.ics", "w", encoding="utf-8") as f:
     f.writelines(cal)
+
+client = storage.Client()
+bucket = client.bucket("symfonic.fr")
+blob = bucket.blob("symfonic.fr/esbva_lm_calendrier.ics")
+blob.upload_from_string(str(cal), content_type="text/calendar")
