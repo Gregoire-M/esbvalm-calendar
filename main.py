@@ -4,6 +4,8 @@ from ics import Calendar, Event
 from datetime import datetime, timedelta
 from google.cloud import storage
 import pytz
+import yaml
+from pathlib import Path
 
 url = "https://esbva-lm.com/equipe-pro/calendrier-resultat/"
 
@@ -12,6 +14,15 @@ response.raise_for_status()
 
 soup = BeautifulSoup(response.text, "html.parser")
 matches = soup.select("table tbody tr")
+
+# Load overrides from YAML file
+overrides = {}
+overrides_file = Path("overrides.yaml")
+if overrides_file.exists():
+    with open(overrides_file, "r", encoding="utf-8") as f:
+        config = yaml.safe_load(f)
+        if config and "overrides" in config:
+            overrides = config["overrides"]
 
 cal = Calendar()
 
@@ -27,6 +38,12 @@ for match in matches:
 
     event = Event()
     event.name = f"{home_team} vs {away_team}"
+    
+    # Check for date override
+    if event.name in overrides:
+        override_date_str = overrides[event.name]
+        match_datetime = datetime.strptime(override_date_str, "%Y-%m-%d %H:%M")
+    
     event.begin = match_datetime.replace(tzinfo=pytz.timezone("Europe/Paris"))
     event.end = (match_datetime + timedelta(hours=2)).replace(tzinfo=pytz.timezone("Europe/Paris"))
     if home_team == 'ESBVA-LM':

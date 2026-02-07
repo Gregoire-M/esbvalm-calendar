@@ -3,3 +3,4 @@ beautifulsoup4
 ics
 pytz
 google-cloud-storage
+pyyaml
