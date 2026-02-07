@@ -1,5 +1,11 @@
+# Override des dates de matchs existants
+# L'override s'applique uniquement si la date originale est à moins de 7 jours
 overrides:
-  # Example:
-  # "ESBVA-LM vs Nantes": "2026-03-15 20:00"
-  # "Paris vs ESBVA-LM": "2026-03-22 18:30"
   "ESBVA-LM vs Angers": "2026-02-08 15:00"
+  "ESBVA-LM vs Roche Vendée": "2026-02-15 15:00"
+
+# Ajout de matchs absents du site source
+additional_matches:
+  - home_team: "ESBVA-LM"
+    away_team: "Estudiantes"
+    date: "2026-02-12 20:00"
