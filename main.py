@@ -6,10 +6,14 @@ from google.cloud import storage
 import pytz
 import yaml
 from pathlib import Path
+import os
 
 url = "https://esbva-lm.com/equipe-pro/calendrier-resultat/"
 
-response = requests.get(url)
+# Disable SSL verification for local dev (set DISABLE_SSL_VERIFY=1 to activate)
+# verify_ssl = os.getenv("DISABLE_SSL_VERIFY") != "1"
+verify_ssl = False
+response = requests.get(url, verify=verify_ssl)
 response.raise_for_status()
 
 soup = BeautifulSoup(response.text, "html.parser")
@@ -39,10 +43,14 @@ for match in matches:
     event = Event()
     event.name = f"{home_team} vs {away_team}"
     
-    # Check for date override
+    # Check for date override (only if original date is within 7 days of override)
     if event.name in overrides:
         override_date_str = overrides[event.name]
-        match_datetime = datetime.strptime(override_date_str, "%Y-%m-%d %H:%M")
+        override_datetime = datetime.strptime(override_date_str, "%Y-%m-%d %H:%M")
+        days_diff = abs((match_datetime - override_datetime).days)
+        
+        if days_diff <= 7:
+            match_datetime = override_datetime
     
     event.begin = match_datetime.replace(tzinfo=pytz.timezone("Europe/Paris"))
     event.end = (match_datetime + timedelta(hours=2)).replace(tzinfo=pytz.timezone("Europe/Paris"))
