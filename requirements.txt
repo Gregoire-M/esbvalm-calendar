@@ -1,6 +1,6 @@
 requests
 beautifulsoup4
-tatsu<5.12.0
+tatsu<5.19.0
 ics<0.8
 pytz
 google-cloud-storage
