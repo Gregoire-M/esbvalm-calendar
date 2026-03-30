@@ -1,6 +1,6 @@
 requests
 beautifulsoup4
-ics
+ics<0.8
 pytz
 google-cloud-storage
 pyyaml
