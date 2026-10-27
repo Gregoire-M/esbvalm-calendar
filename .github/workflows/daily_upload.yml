@@ -29,6 +29,7 @@ jobs:
         run: python -m unittest discover -s tests
 
       - name: Run script and upload to GCP
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
         env:
           GCP_SERVICE_ACCOUNT_KEY: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
           BUCKET_NAME: "symfonic.fr"
