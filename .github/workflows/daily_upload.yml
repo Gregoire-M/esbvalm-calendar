@@ -2,12 +2,16 @@ name: Daily ICS Upload
 
 on:
   schedule:
-    - cron: "0 8 * * *"  # Every day at 08:00 UTC
+    - cron: "17 7 * * *"  # Every day at 07:17 UTC
   workflow_dispatch:
   pull_request:
   push:
     branches: 
       - main
+
+permissions:
+  contents: read
+  actions: write
 
 jobs:
   build:
@@ -37,3 +41,7 @@ jobs:
           echo "$GCP_SERVICE_ACCOUNT_KEY" > key.json
           export GOOGLE_APPLICATION_CREDENTIALS="key.json"
           python main.py
+
+      - name: Keep scheduled workflow active
+        if: github.event_name == 'schedule'
+        uses: liskin/gh-workflow-keepalive@v1
