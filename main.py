@@ -1,5 +1,6 @@
 import json
 import logging
+import os
 import re
 from datetime import datetime, timedelta
 from pathlib import Path
@@ -285,7 +286,7 @@ def main():
 
     from google.cloud import storage
 
-    bucket_name = "symfonic.fr"
+    bucket_name = os.environ.get("BUCKET_NAME", "symfonic.fr")
     client = storage.Client()
     bucket = client.bucket(bucket_name)
     blob = bucket.blob("esbva_lm_calendrier.ics")
