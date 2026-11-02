@@ -39,6 +39,8 @@ jobs:
           BUCKET_NAME: "symfonic.fr"
         run: |
           echo "$GCP_SERVICE_ACCOUNT_KEY" > key.json
+          chmod 600 key.json
+          trap 'rm -f key.json' EXIT
           export GOOGLE_APPLICATION_CREDENTIALS="key.json"
           python main.py
 
