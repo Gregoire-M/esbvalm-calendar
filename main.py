@@ -290,7 +290,7 @@ def main():
     client = storage.Client()
     bucket = client.bucket(bucket_name)
     blob = bucket.blob("esbva_lm_calendrier.ics")
-    blob.upload_from_string(str(calendar), content_type="text/calendar")
+    blob.upload_from_string(calendar.serialize(), content_type="text/calendar")
 
 
 if __name__ == "__main__":
